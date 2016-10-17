@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+// File: seatingChart.html
+//
+// Desc: seating chart
+//
+// Parameters (passed to webpage) 
+//	  stuId - Moodle UserName (matching name needs to be in associated google spreadsheet.  
+//			If provided, shows seating chart in student view and allows student to click on seat.
+//			If not provided, shows seating chart in instructor view and ignores seat selection.
+//	e.g: seatingChart.html?stuId=userName  (from Moodle)
+//
+//	Note: Exact same userName must be in associated Google spreadsheet, along with full name
+//  (that will appear on seating chart).  Any name provided to this script that is NOT in the
+//	spreadsheet will not be added to the chart (done via the google script associated with the 
+//	spreadsheet.)
+-->
+	<head>
+		<meta charset="UTF-8">
+		<title>Seating Chart</title>
+		<zlink type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600">
+		<link type="text/css" rel="stylesheet" href="seatingChart.css">
+		<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript" src="seatingChart.js"></script>
+	</head>
+	<body>
+		<h1>Seating Chart (v0.1)</h1>
+		<h2>Click on your seat to add your name to the chart</h2>
+		<div id="chart"></div>
+		<div id="msg">Data is loading...</div>
+	</body>
+</html>

@@ -1,0 +1,148 @@
+
+body {
+	margin: 0px;
+	padding:10px;
+}
+
+h1 {
+	width: 100%;
+	text-align: center;
+	font-size: 20px;
+	margin: 0px;
+}
+
+h2 {
+	width: 100%;
+	text-align: center;
+	font-size: 12px;
+	margin: 0px;
+}
+
+
+#frontLabel {
+	width: 100%;
+	font-size: 20px;
+	text-align: center;
+	padding: 10px;
+	zborder: 1px solid black;
+}
+
+#chart {
+	margin: auto;
+    width: 90%;
+}
+
+table {
+	zborder: 1px solid black;
+	margin: auto;
+	padding: 10px;
+	zdisplay: inline;
+	text-align: center;
+	border-spacing: 1px;
+    border-collapse: separate;
+}
+
+tr {
+	margin: 0px;
+	padding: 0px;
+}
+
+td {
+	border: 1px solid black;
+	margin: 0px;
+	width: 80px;
+	height: 40px;
+	text-align: center;
+}
+
+.isle {
+	width: 10px;
+	border: 1px solid white;
+	color: white;
+}
+
+.seat:hover {
+	cursor: pointer;
+}
+
+.seatNum {
+	font-size: 50%;
+	left: 1px;
+	top: 1px;
+}
+
+#msg {
+	margin: auto;
+	text-align: center;
+	color: red;
+}
+
+
+/*html, body, form, h1, label, input {
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	margin: 0;
+	padding: 0;
+	vertical-align: baseline;
+}
+
+body {
+	background-color: #F8F8F8;
+	font-family: 'Open Sans', sans-serif;
+	line-height: 1.8;
+	margin: 0 auto;
+	max-width: 47.5em;
+	padding-top: 1em;
+	word-wrap: break-word;
+}
+
+form {
+	background-color: #FFFFFF;
+	box-shadow: 0 .09em .09em rgba(0, 0, 0, 0.3);
+	padding: 0 .5em .5em .5em;
+}
+
+h1, label, input {
+	color: #333333;
+}
+
+h1 {
+	font-size: 1.25em;
+	font-weight: 600;
+	padding-top: .3em;
+}
+
+label {
+	margin-left: .33em;
+}
+
+input {
+	background-color: #FBFBFB;
+	border: .09em solid #C1C1C1;
+	font-size: 1em;
+	margin: .5em 0 0 .5em;
+	padding: 0 .4em 0 .4em;
+}
+
+input[type='text'] {
+	width: 50%;
+}
+
+input[type='button']:hover {
+	background-color: #EBEBEB;
+}
+
+input[type='button']:active {
+	background-color: #DADADA;
+}
+
+::selection {
+	background-color: #BBBBBB;
+	color: #000000;
+}
+
+::-moz-selection {
+	background-color: #BBBBBB;
+	color: #000000;
+}*/
