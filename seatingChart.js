@@ -1,13 +1,12 @@
-﻿
 // File: seatingChart.js
 //
 // Desc: logic for seatingChart.html. 
 //
 // Parameters (passed to webpage) 
-//	  stuId - Moodle UserName (matching name needs to be in associated google spreadsheet.  
+//	  userId - Moodle UserName (matching name needs to be in associated google spreadsheet.  
 //			If provided, shows seating chart in student view and allows student to click on seat.
 //			If not provided, shows seating chart in instructor view and ignores seat selection.
-//	e.g: seatingChart.html?stuId=userName  (from Moodle)
+//	e.g: seatingChart.html?userId=userName  (from Moodle)
 //
 //	Note: Exact same userName must be in associated Google spreadsheet, along with full name
 //  (that will appear on seating chart).  Any name provided to this script that is NOT in the
@@ -17,7 +16,7 @@
 $(document).ready(function() {
 	var frontLabelElement='<div id="frontLabel">Front of Room</div>';
 		
-	// Build Seating Chart HTML code (with numbers in place of names)
+	// Build Seating Chart HTML code 
 	$('#chart').append('<table id="seats"></table>');
 	var seatNum=1;
 	
@@ -35,9 +34,9 @@ $(document).ready(function() {
 	$(".col2, .col6").after('<td class="isle">isle</td>');
 		
 	//if student id was provided, configure student view, otherwise instructor view
-	var stuId=getUrlParameter("stuId");
+	var userId=getUrlParameter("userId");
 	var view;
-	if (stuId == undefined) {
+	if (userId == undefined) {
 		view='I';
 		$('#chart table:last').after(frontLabelElement);
 		$('h2').hide();
@@ -52,24 +51,22 @@ $(document).ready(function() {
 		if (view=='S') {
 			var seatNum = $(this).attr("data-seatNumStuView");
 			//alert(seat);
-			if (stuId != undefined)
-				insertStudent(stuId, seatNum);
+			if (userId != undefined)
+				insertStudent(userId, seatNum);
 		}
 	});
 
 	//insert given student into list, then fetch new list and update screen
-	function insertStudent(stuId, seatNum) {
+	function insertStudent(userId, seatNum) {
 		$('#msg').show();
 		$.ajax({
 			url: 'https://script.google.com/macros/s/AKfycbyM43MEJpqpyxzIlWsbcMuuUdSLe6R4yIRkk27TI8EMlTDWcMQ/exec',
 			data: {
-				'stuId': stuId,
+				'userId': userId,
 				'seatNum': seatNum			
 			},
 			type: 'POST',
 			dataType: 'json'
-			//error: alert("Error occurred!"),
-			//success: $('body').append('<div>insert successful</div>')
 		})    
 		.done(function( data ) {
 			var dataAttrName;
@@ -77,14 +74,19 @@ $(document).ready(function() {
 				dataAttrName='data-seatNumInsView';
 			else 
 				dataAttrName='data-seatNumStuView';
+			$('.seat').html(""); 
 			for (var ndx=0; ndx<data.length; ndx++) {
 				var selector='*[' + dataAttrName + '="' + data[ndx].seat + '"]';
 				$(selector).html(data[ndx].name);
 			}
 			$('#msg').hide();
+		})
+		.fail(function(data){
+			$('#msg').html("Error - reload Page.");
 		});
 	}
 	
+	//get specified URL parameter
 	function getUrlParameter(sParam) {
 		var sPageURL = decodeURIComponent(window.location.search.substring(1)),
 			sURLVariables = sPageURL.split('&'),
