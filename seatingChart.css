@@ -4,6 +4,14 @@ body {
 	padding:10px;
 }
 
+section {
+	width: 800px;
+	margin: auto;
+	padding: 10px;
+	zborder: 1px solid red;
+	text-align: center;
+}
+
 h1 {
 	width: 100%;
 	text-align: center;
@@ -24,15 +32,19 @@ h2 {
 	font-size: 20px;
 	text-align: center;
 	padding: 10px;
+	margin-bottom: 0px;
 	zborder: 1px solid black;
 }
 
-#chart {
-	margin: auto;
-    width: 90%;
+#dataLoadMsg, #submitMsg {
+	margin: 0px, auto;
+	text-align: center;
+	color: red;
 }
 
-table {
+/* seating chart */
+
+table#seats {
 	zborder: 1px solid black;
 	margin: auto;
 	padding: 10px;
@@ -71,13 +83,52 @@ td {
 	top: 1px;
 }
 
-#msg {
-	margin: auto;
-	text-align: center;
-	color: red;
+.answerSubmitted {
+	border-color: blue;
+	color: blue;
 }
 
+textarea, pre {
+    -moz-tab-size : 4;
+      -o-tab-size : 4;
+         tab-size : 4;
+}
 
+/* answers */
+#answerControls {
+	width: 20%;
+	zborder: 1px solid black;
+	float: left;
+	zpadding: 5px;
+}
+
+#answerControls button {
+	width: 110px;
+	margin-bottom: 5px;
+}
+
+#answers {
+	margin-left: 20%;
+	border: 1px solid black;
+	text-align: left;
+	min-height: 100px;
+	zpadding: 5px;
+}
+
+.answer {
+	border: 1px solid black;
+	padding: 5px;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 15px;
+}
+
+.answer button {
+	float: right;
+}
+
+.hidden {
+	display: none;
+}
 /*html, body, form, h1, label, input {
 	border: 0;
 	font-size: 100%;
@@ -96,53 +147,3 @@ body {
 	padding-top: 1em;
 	word-wrap: break-word;
 }
-
-form {
-	background-color: #FFFFFF;
-	box-shadow: 0 .09em .09em rgba(0, 0, 0, 0.3);
-	padding: 0 .5em .5em .5em;
-}
-
-h1, label, input {
-	color: #333333;
-}
-
-h1 {
-	font-size: 1.25em;
-	font-weight: 600;
-	padding-top: .3em;
-}
-
-label {
-	margin-left: .33em;
-}
-
-input {
-	background-color: #FBFBFB;
-	border: .09em solid #C1C1C1;
-	font-size: 1em;
-	margin: .5em 0 0 .5em;
-	padding: 0 .4em 0 .4em;
-}
-
-input[type='text'] {
-	width: 50%;
-}
-
-input[type='button']:hover {
-	background-color: #EBEBEB;
-}
-
-input[type='button']:active {
-	background-color: #DADADA;
-}
-
-::selection {
-	background-color: #BBBBBB;
-	color: #000000;
-}
-
-::-moz-selection {
-	background-color: #BBBBBB;
-	color: #000000;
-}*/
