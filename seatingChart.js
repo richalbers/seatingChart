@@ -47,11 +47,11 @@ $(document).ready(function() {
 			seatNum++;
 		}
 	}
-	$(".col2, .col6").after('<td class="isle">isle</td>');
+	$(".col2, .col6").after('<td class="isle"> &nbsp; &nbsp; </td>');
 		
 	//configure student view or instructor view
 	if (studentView) {
-		$('#seats').before(frontLabelElement);
+		$('#seatMsg').before(frontLabelElement);
 		$('#answerSection').show();
 		$('#answerListSection').hide();
 	} else {	
@@ -131,6 +131,7 @@ $(document).ready(function() {
 				updateSeatingChart( data );
 				$("#answers").html("");
 				$(".answerSubmitted").removeClass("answerSubmitted");
+				$(".answerNotSubmitted").removeClass("answerNotSubmitted");
 			});
 		});//click
 		
@@ -142,9 +143,15 @@ $(document).ready(function() {
 				$(this).html("Author");
 		});
 		
+	
+		// check or remove answer
+		$('#answers').on("click", ".checkmarkButton", function() {
+			$(this).parent().toggleClass("checked");
+		});
+		
 		// hide answer
-		$('#answers').on("click", ".hideButton", function() {
-			$(this).parent().addClass("hidden");
+		$('#answers').on("click", ".xButton", function() {
+			$(this).parent().slideUp();
 		});
 	}
 	
@@ -169,7 +176,7 @@ $(document).ready(function() {
 		})    
 		.done(function( data ) {
 			callback(data);
-			$('#dataLoadMsg').html("");		
+			$('#dataLoadMsg').html(" &nbsp; ");		
 		})
 		.fail(function(data){
 			$('#dataLoadMsg').html("Error - reload Page.");
@@ -211,22 +218,32 @@ $(document).ready(function() {
 			if (x > y) {return 1;}
 			return 0;
 		});
-			
+		
+		
+		var count=0;
 		for (var ndx=0; ndx<data.length; ndx++)  {
+			//selector for seat to mark as submitted/notSubmitted
+			var selector='#seats *[' + dataAttrName + '="' + data[ndx].seat + '"]';
+			
 			if (data[ndx].answer != "") {
 				//add answer to list (hidden for now)
 				var answer = formatAsHtml(data[ndx].answer);
 				var dataAttr=dataAttrName + '="'+data[ndx].seat + '" ';;
 				$("#answers").append('<div class="answer hidden"' + dataAttr + '>'
 					+ answer
-					+ '<button class="hideButton">Hide</button>'
+					+ '<button class="xButton">X</button>'
+					+ '<button class="checkmarkButton">&#x2713;</button>'
 					+ '<button class="authorButton" data-name="' + data[ndx].fullName +'">Author</button>'
 					+ '</div>');
-				//denote seat/user that submitted answer
-				var selector='#seats *[' + dataAttrName + '="' + data[ndx].seat + '"]';
+				count++;
+				//denote seat/user submitted answer
 				$(selector).addClass("answerSubmitted"); 
+			} else {
+				//denote seat/user did not submit answer
+				$(selector).addClass("answerNotSubmitted"); 
 			}
 		}	
+		$("#answers").append('<div class="msg"> &nbsp;' + count + ' answers submitted.</div>');
 		
 	}
 	//========================================================================
