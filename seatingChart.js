@@ -111,6 +111,8 @@ $(document).ready(function() {
 		$('#getAnswersButton').click(function() {
 			getData( {'class': classSection }, function( data ) {
 				updateSeatingChart( data );
+				$(".answerSubmitted").removeClass("answerSubmitted");
+				$(".answerNotSubmitted").removeClass("answerNotSubmitted");
 				loadAnswers( data );
 				$('.answer').addClass('hidden');	
 			});
