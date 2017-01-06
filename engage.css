@@ -1,0 +1,229 @@
+
+body {
+	margin: 0px; padding: 0px; border: 0px;
+	font-family: Arial;
+	background-color: rgb(111, 165, 55);
+}
+
+div { margin: 0px; padding: 0px; border: 0px; }
+
+section {
+		position: absolute;
+		left: 10px; top: 87px; /* top is 27 more then #menu top*/
+		width: 93%;
+		z-index: 1;
+		border: 1px solid black;
+		padding: 10px;
+		zvisibility: hidden;
+		background-color: white; 
+		min-width: 500px;
+		border-radius: 5px;
+	}
+	
+h1, h2, h3 { margin: 0px; padding: 0px; border: 0px; }
+
+h2, h3 { font-size: 20px; }
+
+#Heading {
+	position: absolute;
+	left: 20px; right: 20px; top: 10px; 
+	text-align: center;
+	z-index: 2;
+	color: black;
+	min-width: 500px;
+}
+
+#footer {
+	position: absolute;
+	width: 100%;
+	bottom: 0px;
+}
+
+#userInfo {
+	float: left;
+}
+
+#authorInfo {
+	float: right;
+}
+  
+/* menu section ------------------------------------- */
+
+#menu {
+	position: absolute;
+	left: 10px; top: 60px; /* top is 27 less then section top */
+	height: 30px;
+	z-index: 2;
+	min-width: 500px;
+}
+
+
+.menuOffset {
+	float: left;
+	padding: 3px 1px;
+	z-index: 0;
+}
+
+.menuItem {
+	float: left;
+	padding: 3px 10px;
+	background-color: #dddddd; /*also in js, constants */
+	border: 1px solid black;   
+	border-bottom: 2px solid black; /*also in js, ShowTab() */
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.menuItemSelected {
+	background-color: white;
+	border-bottom: 4px solid white;
+}
+
+/* --------------------------------------------------------- */
+
+#chartSection {
+	background-color: lightblue;
+	border-radius: 20px;
+}
+
+.lblFrontOfRoom {
+	width: 100%;
+	text-align: center;
+	font-size: 20px;
+	margin: 0px;
+	padding: 0px;
+}
+
+#lblAddToChart {
+	width: 100%;
+	text-align: center;
+	font-size: 14px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.msgUpdateSeatingChart, #msgSubmit {
+	margin: 0px, auto;
+	text-align: center;
+	color: red;
+}
+
+/*#answerDisplaySection {
+	padding-bottom: 200px;
+}
+/* seating chart */
+
+table#seats {
+	margin: auto;
+	padding: 0px;
+	text-align: center;
+	border-spacing: 1px;
+    border-collapse: separate;
+}
+
+tr {
+	margin: 0px;
+	padding: 0px;
+}
+
+td {
+	border: 1px solid black;
+	border-radius: 4px;
+	margin: 0px;
+	width: 90px;
+	height: 40px;
+	text-align: center;
+}
+
+.isle {
+	width: 10px;
+	border: 0px;
+	color: white;
+}
+
+.seat:hover {
+	cursor: pointer;
+}
+
+.empty {
+	color: lightgray;
+}
+
+.seatNum {
+	font-size: 50%;
+	left: 1px;
+	top: 1px;
+}
+
+.answerSubmitted {
+	border-color: darkgreen;
+	color: darkgreen;
+}
+.answerNotSubmitted {
+	border-color: brown;
+	color: brown;
+}
+
+/* --------------------------------------------------------- */
+
+textarea, pre {
+    -moz-tab-size : 4;
+      -o-tab-size : 4;
+         tab-size : 4;
+}
+
+#answerControls {
+	width: 90px;
+	zborder: 1px solid black;
+	float: left;
+	zpadding: 5px;
+}
+
+#answerControls button {
+	width: 80px;
+	margin-bottom: 5px;
+}
+
+#answers {
+	margin-left: 100px;
+	border: 1px solid black;
+	text-align: left;
+	min-height: 130px;
+	zpadding: 5px;
+}
+
+.answer {
+	border: 1px solid black;
+	padding: 5px;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 15px;
+}
+
+.answer button {
+	float: right;
+	border-radius: 4px;
+}
+
+
+.hidden {
+	display: none;
+}
+
+.checked {
+	background-color: green;
+	color: white;
+}
+
+.xed {
+	background-color: crimpson;
+}
+
+/* dialog box ------------------------------------------ */
+
+.ui-widget-header,.ui-state-default, ui-button {
+            background:#b9cd6d;
+            border: 1px solid #b9cd6d;
+            color: #FFFFFF;
+            font-weight: bold;
+         }
+

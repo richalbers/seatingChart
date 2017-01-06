@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+// File: engage.html
+//
+// Parameters (passed to webpage) 
+//	  class - class (matches google sheet workbook name)
+//			If not provided, nothing gets displayed
+//	  userName - Moodle UserName (name needs to be in associated google spreadsheet workbook.  
+//			If not provided, shows seating chart but doesn't accept any input
+//
+//	  e.g: engage.html?class=CS161-01&userName=bobb  (userName is from Moodle: e.g. richa)
+-->
+<head>
+	<meta charset="UTF-8">
+	<title>Engage</title>
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet"> <!--dialog box -->
+	<link type="text/css" rel="stylesheet" href="engage.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script> <!-- Dialog box -->
+	<script type="text/javascript" src="wheel.js"></script>
+	<script type="text/javascript" src="engage.js"></script>
+</head>
+	
+<body>
+	<!-- ============ Heading =========== -->
+	<div id="Heading">
+		<h1>Engage!</h1>
+	</div>
+
+	<!-- ============ Menu =========== -->
+	<nav id="menu">
+		<div class="menuOffset">&nbsp;</div>
+		<!-- note: this div is filled with MenuItem divs (each representing a "tab") via javascript when page loads -->
+	</nav>
+	
+	<!-- ============ Content Pages =========== -->		
+	<section id="seatingChart" data-menutext="Seating Chart" class="student">
+		<p class="lblFrontOfRoom">Front of Room<p>
+		<p id="lblAddToChart">Click on your seat to add your name to the chart</p>
+		<table id="seatingChartFromBack"></table>
+		<button class="btnUpdateChart" type="button">Update</button>
+		<div class="msgUpdateSeatingChart">Updating chart...</div>
+	</section>
+
+	<section id="answerSection" data-menutext="Answer Entry" class="student">
+		<span>When prompted, enter an answer below and press submit</span><br>
+		<!-- <input id="answer" size="80" name="answer" type="text"></input><br> -->
+		<textarea id="answer" rows="15" cols="80" name="answer" type="text" spellcheck="false"></textarea> <br>
+		<button id="btnSubmitAnswer" type="button">Submit</button>
+		<span id="msgSubmit"></span>
+	</section>
+	
+	<section id="answerDisplaySection" data-menutext="Answer Display" class="instructor">
+		<table id="seatingChartFromFront"></table>
+		<p class="lblFrontOfRoom">Front of Room</p>
+		<button class="btnUpdateChart" type="button">Update</button>
+		<span class="msgUpdateSeatingChart">Updating chart...</span>
+		
+		<hr>
+		
+		<div id="answerControls">
+			<button id="btnGetAnswers" type="button">get Answers</button><br>
+			<button id="btnShowAnswers" type="button">show Answers</button><br>
+			<button id="btnClearAnswers" type="button">clear Answers</button><br>
+		</div>
+		<div id="answers"></div>		
+	</section>
+		
+
+	<section id="wheelSection" data-menutext="Wheel of Misfortune" class="instructor">
+		<div id="wheelControls" style="float: left">
+			<button id="btnWheelLoad" type="button"> Load Names </button> &nbsp; &nbsp; 
+			<button id="btnWheelSpin" style="position: relative; top: 100; left: 50;"> Spin </button>
+			<div id="wheelNameList">
+			</div>
+		</div>
+		<canvas id="canvasWheel" width="600" height="500" style="float: left; zborder: solid 1px black"></canvas><br><br>
+	</section>
+	
+	<!-- ============ Dialog Boxes =========== -->
+	<div id = "dlgPasswordEntry">
+		<label for = "password">Password: </label>
+		<input type = "password" id = "password">
+    </div>
+	  
+	<!-- ============ footer =========== -->	
+	<div id="footer">
+		<div id="authorInfo">by Rich Albers</div>
+	</div>
+	
+</body>
+</html>
