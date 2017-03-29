@@ -1,10 +1,11 @@
-﻿
 // File: engage.js
 //
 // Parameters (passed to webpage) 
 //	  class - class (matches google sheet workbook name)
 //			If not provided, nothing gets displayed
-//	  userName - Moodle UserName (name needs to be in associated google spreadsheet workbook.  
+//    room - room class is in (for seating chart orientation)
+//          If not provided, defaults to S182
+//    userName - Moodle UserName (name needs to be in associated google spreadsheet workbook.  
 //			If not provided, shows seating chart but doesn't accept any input
 //
 //	  e.g: engage.html?class=CS161-01&userName=bobb  (userName is from Moodle: e.g. richa)
@@ -15,26 +16,53 @@ $(document).ready(function() {
 	//Note:  all functions are defined inside this function 
 	//		 so they all have access to these variables.
 	const googleScriptURL="https://script.google.com/macros/s/AKfycbyM43MEJpqpyxzIlWsbcMuuUdSLe6R4yIRkk27TI8EMlTDWcMQ/exec"
+
 	var classSection=getUrlParameter("class");
 	var userName=getUrlParameter("userName");
-	var password = "";
+	var room=getUrlParameter("room");
+	var password=getUrlParameter("password"); //usually not supplied
+
 	var wheel = new Wheel("canvasWheel");
-	
 	wheel.draw();
-	allowTabsToBeInput('textarea'); //so users can enter tabs in answers
 	
+	allowTabsToBeInput('textarea'); //so users can enter tabs in answers
+
+	// --------------------------------------------------------------------
+	// dealing with parameters
+	
+	var errMsg = "";
 	//username should match something on server (user Moodle usernames)
 	if (userName == undefined) {
-		showErrorDlgBox("Error: missing user name.", "User name wasn't provided, defaulting to anonymous.<br>You can view the seating chart, but not take a seat or submit answers. <br>To fix add a userName parameter to URL (specifying a valid user name)");
+		errMsg += "User name wasn't provided, defaulting to anonymous.<br>You can view the seating chart, but not take a seat or submit answers. <br>To fix add a userName parameter to URL (specifying a valid user name)<br>";
 		userName="anonymous";
 	}
 	
 	// class (e.g. "CS-161-01") specifies which sheet contains data on server
 	if (classSection == undefined) {
-		showErrorDlgBox("Error: missing class parameter.", "Class (e.g. CS-161-01) wasn't provided. Nothing's going to work.<br>To fix add a class parameter to the URL (spcifying a valid class)");
+		errMsg += "<br>Class (e.g. CS-161-01) wasn't provided. Nothing's going to work.<br>To fix add a class parameter to the URL (specifying a valid class)<br>";
 		classSection="";	
 	}
-
+	
+	// room (e.g. S181, S182, or S183)
+	if (room == undefined) {
+		errMsg += "<br>Room wasn't provided, defaulting to S182. <br>To fix add a room parameter to the URL (specifying S181, S182, or S183)<br>";
+		room="S182";
+	} else if (room != "S181" && room != "S182" && room != "S183") {
+		errMsg += "<br>invalid room parameter, defaulting to S182. <br>To fix add a room parameter to the URL specifying S181, S182, or S183)<br>";
+		room="S182";	
+	}
+	
+	// password is optional, needed only for the instructor, and typically not provided
+	if (password == undefined)
+		password = "";
+	
+	//if any parameters were invalid, show the error message.
+	if (errMsg != "")
+		showErrorDlgBox("Error: missing parameter(s)", errMsg);
+	
+	// ----------------------------------------------------------------------------
+	// page configuration
+	
 	//build menu
 	$( 'section' ).each(function() {
 		var menuText = $( this ).data("menutext");
@@ -61,7 +89,7 @@ $(document).ready(function() {
 	$(".instructor").hide();
 	
 	// Build Seating Chart HTML code (names are added later)
-	buildSeatingCharts();
+	buildSeatingCharts(room);
 		
 	//Update seating chart with existing names (from server)
 	getData( {'class': classSection }, function( data ) {
@@ -266,14 +294,28 @@ $(document).ready(function() {
 	
 	//=======================================================================
 	//update Seating chart
-	function buildSeatingCharts() {
-		var seats = [ //seat numbers (as viewed from back; 99="Instructor")
+	function buildSeatingCharts(room) {
+		var seats182 = [ //seat numbers (as viewed from back; 99="Instructor")
 			[  0, 99,   0,    0,  0,  0,  0,   0,   0,  0],
 			[  1,  2,   0,    3,  4,  5,  6,   0,   7,  8],
 			[  9, 10,   0,   11, 12, 13, 14,   0,  15, 16],
 			[ 17, 18,   0,   19, 20, 21, 22,   0,  23, 24],
-			[  0,  0,   0,    0,  0,  0,  0,   0,  25, 26],
+			[  0,  0,   0,    0,  0,  0,  0,   0,  25, 26]
 		];
+		
+		var seats181 = [ //seat numbers (as viewed from back; 99="Instructor")
+			[  0,  0,   0,    0,  0,  0,  0,   0,  99,  0],
+			[  1,  2,   0,    3,  4,  5,  6,   0,   7,  8],
+			[  9, 10,   0,   11, 12, 13, 14,   0,  15, 16],
+			[ 17, 18,   0,   19, 20, 21, 22,   0,  23, 24],
+			[ 25, 26,   0,    0,  0,  0,  0,   0,   0,  0]
+		];		
+		
+		var seats;
+		if (room=="S181" || room=="S183") //181 & 183 have same layout
+			seats = seats181;
+		else 
+			seats = seats182; 
 		
 		var seatingChartTableID="#seatingChartFromBack";
 		for (var row=0; row<seats.length; row++){  
