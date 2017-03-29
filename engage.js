@@ -1,14 +1,14 @@
 // File: engage.js
 //
 // Parameters (passed to webpage) 
-//	  class - class (matches google sheet workbook name)
-//			If not provided, nothing gets displayed
+//    class - class (matches google sheet workbook name)
+//          If not provided, nothing gets displayed
 //    room - room class is in (for seating chart orientation)
 //          If not provided, defaults to S182
 //    userName - Moodle UserName (name needs to be in associated google spreadsheet workbook.  
-//			If not provided, shows seating chart but doesn't accept any input
+//          If not provided, shows seating chart but doesn't accept any input
 //
-//	  e.g: engage.html?class=CS161-01&userName=bobb  (userName is from Moodle: e.g. richa)
+//    e.g: engage.html?class=CS161-01&userName=bobb  (userName is from Moodle: e.g. richa)
 //
 //  TODO: only enable seat-clicks and Answer Entry tab if valid userID is provided.
 
