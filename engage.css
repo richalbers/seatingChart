@@ -113,6 +113,10 @@ h2, h3 { font-size: 20px; }
 }
 /* seating chart */
 
+#seatingChartFromBack, #seatingChartFromFront {
+	margin: auto;
+}
+
 table#seats {
 	margin: auto;
 	padding: 0px;
