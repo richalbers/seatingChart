@@ -200,8 +200,8 @@ Wheel.prototype.drawDivider = function(ctx, angleRad, x, y) {
 Wheel.prototype.drawPointer = function(ctx) {
 
  	var yDeflection=0;
-	var pointerHeight=8;  //it's really twice that...
-	var pointerLength=20; //it's really this + height
+	var pointerHeight=10;  //it's really twice that...
+	var pointerLength=24; //it's really this + height
 	
 	//get pixel on edge of wheel where pointer will be to see if pointer needs to deflect
 	var imgData=ctx.getImageData(this.width/2 + this.outerRadius-1, this.height/2 ,1,1);
