@@ -217,8 +217,8 @@ Wheel.prototype.drawPointer = function(ctx) {
 	var x=this.outerRadius; 
 	var y=0;
 	
-	ctx.fillStyle = "white";
-	ctx.strokeStyle = "white";
+	ctx.fillStyle = "gray";
+	ctx.strokeStyle = "gray";
 	ctx.beginPath();
 	ctx.arc(x+pointerLength,y, pointerHeight, 0, Math.PI*2, true); 
 	ctx.closePath();
