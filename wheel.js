@@ -140,6 +140,12 @@ Wheel.prototype.drawWheel = function(ctx) {
 		this.drawText(ctx, this.aNames[ndx]);
 	}
 	
+	//draw "pins" between wedges (must be done after ALL wedges are drawn)
+	for (ndx=0;ndx<this.aNames.length; ndx++) {
+		ctx.rotate(angleRad);
+		this.drawDivider(ctx, angleRad, x, y);
+	}
+	
 	//draw center circle
 	ctx.fillStyle = "gray";
 	ctx.strokeStyle = "black";
@@ -148,7 +154,8 @@ Wheel.prototype.drawWheel = function(ctx) {
 	ctx.closePath();
 	ctx.fill();	
  }
-  
+ 
+
 //------------------------------------------------------
 //Draws a wedge for one wheel slice (it's more like a pie slice...)
 Wheel.prototype.drawWedge = function(ctx, angleRad, x, y) {
@@ -176,20 +183,51 @@ Wheel.prototype.drawWedge = function(ctx, angleRad, x, y) {
 	ctx.fill();
 }
 
+//-----------------------------------------------------------
+//Draws "pin" between wedges
+Wheel.prototype.drawDivider = function(ctx, angleRad, x, y) {
+	ctx.fillStyle = "black"; //note: this color value is in drawPointer too!
+	ctx.strokeStyle = "black";
+	
+	ctx.beginPath();
+	ctx.arc(x,y, 2, 0, Math.PI*2, true); 
+	ctx.closePath();
+	ctx.fill();
+}
+
 //------------------------------------------------------
 //Draws the wheel pointer
 Wheel.prototype.drawPointer = function(ctx) {
-	ctx.save();
-	ctx.fillStyle = "gray";
- 	
-	ctx.translate(this.width/2, this.height/2);
-	x=this.outerRadius; 
-	y=0;
 
+ 	var yDeflection=0;
+	var pointerHeight=8;  //it's really twice that...
+	var pointerLength=20; //it's really this + height
+	
+	//get pixel on edge of wheel where pointer will be to see if pointer needs to deflect
+	var imgData=ctx.getImageData(this.width/2 + this.outerRadius-1, this.height/2 ,1,1);
+	var color = imgData.data[0] + imgData.data[1] + imgData.data[2];
+	if (color < 5) { //pins are black.  Or this doesn't work....
+		yDeflection=2;
+	}	
+	
+	//draw pointer
+	ctx.save();
+	
+	ctx.translate(this.width/2, this.height/2);
+	var x=this.outerRadius; 
+	var y=0;
+	
+	ctx.fillStyle = "white";
+	ctx.strokeStyle = "white";
 	ctx.beginPath();
-	ctx.moveTo(x,0);
-	ctx.lineTo(x+20, y-10);
-	ctx.lineTo(x+20, y+10);
+	ctx.arc(x+pointerLength,y, pointerHeight, 0, Math.PI*2, true); 
+	ctx.closePath();
+	ctx.fill();
+	
+	ctx.beginPath();
+	ctx.moveTo(x-3, y+yDeflection);
+	ctx.lineTo(x+pointerLength-2, y-pointerHeight);
+	ctx.lineTo(x+pointerLength-2, y+pointerHeight);
 	ctx.closePath();
 	ctx.fill();
 	
