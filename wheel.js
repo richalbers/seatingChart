@@ -207,7 +207,7 @@ Wheel.prototype.drawPointer = function(ctx) {
 	var imgData=ctx.getImageData(this.width/2 + this.outerRadius-1, this.height/2 ,1,1);
 	var color = imgData.data[0] + imgData.data[1] + imgData.data[2];
 	if (color < 5) { //pins are black.  Or this doesn't work....
-		yDeflection=2;
+		yDeflection=3;
 	}	
 	
 	//draw pointer
