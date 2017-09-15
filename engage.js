@@ -8,7 +8,7 @@
 //    userName - Moodle UserName (name needs to be in associated google spreadsheet workbook.  
 //          If not provided, shows seating chart but doesn't accept any input
 //
-//    e.g: engage.html?class=CS161-01&userName=bobb  (userName is from Moodle: e.g. richa)
+//    e.g: engage.html?class=CS-161-01&room=S181&userName=bobb  (userName is from Moodle: e.g. richa)
 //
 //  TODO: only enable seat-clicks and Answer Entry tab if valid userID is provided.
 
@@ -63,7 +63,12 @@ $(document).ready(function() {
 	// ----------------------------------------------------------------------------
 	// page configuration
 	
-	//build menu
+	//modify heading with parameter data
+	if (classSection != "")
+		$('#Heading h1').html(classSection );
+	$('#Heading #info').html("room: " + room );
+	
+	//build menu (tabs for each content section)
 	$( 'section' ).each(function() {
 		var menuText = $( this ).data("menutext");
 		var contentID = $( this ).attr("id");
@@ -124,7 +129,7 @@ $(document).ready(function() {
 		$(this).dialog("close");
 
 		//NOTE: password needs to be sent to getData!!!
-		getData( {'class': classSection, 'userName':userName, 'seatNum':"99", 'password': password}, function( studentInfoArray ) {
+		getData( {'class': classSection, 'userName':userName, 'seatNum':"99", 'password': password, 'clearAnswers': true}, function( studentInfoArray ) {
 			updateSeatingChart( studentInfoArray );
 			//if user was placed into Instructor seat, then credentials were validated.
 			var validated=false;
@@ -163,6 +168,16 @@ $(document).ready(function() {
 		} else {
 			getData( {'class': classSection, 'userName':userName, 'seatNum':seatNum}, function( data ) {
 				updateSeatingChart( data );
+				//verify givenUserName was in server data (and therefore now on seating chart)
+				var nameInList=false;
+				for (var ndx=0; ndx<data.length; ndx++) {
+					if (data[ndx].userName == userName)
+						nameInList=true;
+				}
+				if (nameInList==false) { 
+					var errMsg = "Error: username ("+userName +") is not on classList <br>(please let instructor know).";
+					showErrorDlgBox("Error: unknown userName", errMsg);
+				}
 			});
 		};
 	});
@@ -201,7 +216,7 @@ $(document).ready(function() {
 		$(selector).removeClass('hidden');
 	});
 	
-	// getAswers button is clicked, fetch answers (but don't display)
+	// getAnswers button is clicked, fetch answers (but don't display)
 	$('#btnGetAnswers').click(function() {
 		getData( {'class': classSection, 'userName': userName, 'password':password, 'getAnswers': true }, function( data ) {
 			updateSeatingChart( data );
@@ -212,7 +227,7 @@ $(document).ready(function() {
 		});
 	});
 	
-	// showAswers button is clicked, fetch answers and display
+	// showAnswers button is clicked, fetch answers and display
 	$('#btnShowAnswers').click(function() {
 		$('.answer').removeClass('hidden');
 	});
