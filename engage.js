@@ -542,5 +542,5 @@ $(document).ready(function() {
 		
 		return newStr;
 	}
-	
+
 });
