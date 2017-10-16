@@ -133,11 +133,13 @@ $(document).ready(function() {
 			updateSeatingChart( studentInfoArray );
 			//if user was placed into Instructor seat, then credentials were validated.
 			var validated=false;
+			var ndx=0;
 			for (ndx=0;ndx<studentInfoArray.length && validated==false; ndx++)
 				if (studentInfoArray[ndx].userName==userName && studentInfoArray[ndx].seat=='99')
 					validated = true;
-			//if validated, show instructor tabs
+			//if validated, show instructor tabs 
 			if ( validated == true) { 
+				$('#note').val(studentInfoArray[--ndx].note);				
 				$(".instructor").show();
 				$(".menuItem:first" ).trigger( "click" );
 			} else {
@@ -259,6 +261,23 @@ $(document).ready(function() {
 	$('#answers').on("click", ".xButton", function() {
 		$(this).parent().slideUp();
 	});
+
+	// ===========================================================================
+	// note functions
+		//if answer textarea is modified, erase submit msg
+	$('#note').keyup(function() {
+		$('#msgSaveNote').html("Data has been modified - save needed!");
+	});
+	
+	// saveNote button is clicked, save note to server
+	$('#btnSaveNote').click(function() {
+		var note=preSanitize($('#note').val()); //actual sanitization is done on server
+		$('#msgSaveNote').html("saving...");
+		getData( {'class': classSection, 'userName':userName, 'note':note}, function( data ) {
+			updateSeatingChart( data );
+			$('#msgSaveNote').html("saved.");
+		});		
+	});
 	
 	// ===========================================================================
 	// wheel functions
@@ -374,9 +393,10 @@ $(document).ready(function() {
 	//		userName - required if seatNum, answer, or clear/getAnswers is given
 	//		seatNum - assigns this seat to userName (for instructor seat, username/password requird)
 	//		answer - assigns this answer to userName
-	//		password (required to sit in instructor seat and for clear/get anwers)
+	//		password (required to sit in instructor seat and for clear/get anwers & note)
 	//		clearAnswers - erases answers for all users (user/password required)
 	//		getAnswers - returns answers (userName/password required)
+	//		note - the note to be saved (userName/password required)
 	//	callback - routine to process data (array of student info) returned from ajax call.
 	//=======================================================================
 	function getData( args, callback ) {

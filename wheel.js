@@ -25,7 +25,8 @@ function Wheel(elementID) {
 					"Wheel", "of", "Misfortune", " ",
 					"Wheel", "of", "Misfortune", " " ];
 					
-	this.aColors = [ "blue", "yellow", "green", "red", "orange", "fuchsia", "teal" ];
+	//this.aColors = [ "blue", "yellow", "green", "red", "orange", "fuchsia", "teal" ];
+	this.aColors = [ "cyan", "yellow", "lightgreen", "tomato", "orange", "fuchsia", "lavender" ];
 	this.lastColorNdx=this.aColors.length-1;
 	this.colorNdx = 0;
 	
@@ -217,8 +218,8 @@ Wheel.prototype.drawPointer = function(ctx) {
 	var x=this.outerRadius; 
 	var y=0;
 	
-	ctx.fillStyle = "gray";
-	ctx.strokeStyle = "gray";
+	ctx.fillStyle = "black";
+	ctx.strokeStyle = "black";
 	ctx.beginPath();
 	ctx.arc(x+pointerLength,y, pointerHeight, 0, Math.PI*2, true); 
 	ctx.closePath();
