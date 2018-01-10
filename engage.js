@@ -47,7 +47,7 @@ $(document).ready(function() {
 	if (room == undefined) {
 		errMsg += "<br>Room wasn't provided, defaulting to S182. <br>To fix add a room parameter to the URL (specifying S181, S182, or S183)<br>";
 		room="S182";
-	} else if (room != "S181" && room != "S182" && room != "S183") {
+	} else if (room != "S181" && room != "S182"  && room != "S182x" && room != "S183") {
 		errMsg += "<br>invalid room parameter, defaulting to S182. <br>To fix add a room parameter to the URL specifying S181, S182, or S183)<br>";
 		room="S182";	
 	}
@@ -329,12 +329,21 @@ $(document).ready(function() {
 	//=======================================================================
 	//update Seating chart
 	function buildSeatingCharts(room) {
-		var seats182 = [ //seat numbers (as viewed from back; 99="Instructor")
+		var seats182x = [ //seat numbers (as viewed from back; 99="Instructor")
 			[  0, 99,   0,    0,  0,  0,  0,   0,  27,  0],
 			[  1,  2,   0,    3,  4,  5,  6,   0,   7,  8],
 			[  9, 10,   0,   11, 12, 13, 14,   0,  15, 16],
 			[ 17, 18,   0,   19, 20, 21, 22,   0,  23, 24],
+			[  0,  0,   0,    0,  0,  0,  0,   0,   0,  0],
 			[  0,  0,   0,   28,  29,  30,  31,  32,  25, 26]
+		];
+		
+		var seats182 = [ //seat numbers (as viewed from back; 99="Instructor")
+			[  0, 99,   0,    0,  0,  0,  0,   0,  0,  0],
+			[  1,  2,   0,    3,  4,  5,  6,   0,  7,  8],
+			[  9, 10,   0,   11, 12, 13, 14,   0,  15, 16],
+			[ 17, 18,   0,   19, 20, 21, 22,   0,  23, 24],
+			[  0,  0,   0,    0,  0,  0,  0,   0,  25, 26]
 		];
 		
 		var seats181 = [ //seat numbers (as viewed from back; 99="Instructor")
@@ -348,7 +357,9 @@ $(document).ready(function() {
 		var seats;
 		if (room=="S181" || room=="S183") //181 & 183 have same layout
 			seats = seats181;
-		else 
+		else if (room=="S182x")
+			seats = seats182x;
+		else
 			seats = seats182; 
 		
 		var seatingChartTableID="#seatingChartFromBack";
