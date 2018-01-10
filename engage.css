@@ -143,6 +143,8 @@ td {
 	width: 10px;
 	border: 0px;
 	color: white;
+	height: 10px;
+	font-size: 10px;
 }
 
 .seat:hover {
