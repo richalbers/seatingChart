@@ -17,13 +17,22 @@ $(document).ready(function() {
 	//		 so they all have access to these variables.
 	const googleScriptURL="https://script.google.com/macros/s/AKfycbyM43MEJpqpyxzIlWsbcMuuUdSLe6R4yIRkk27TI8EMlTDWcMQ/exec"
 
+	//parameters
 	var classSection=getUrlParameter("class");
 	var userName=getUrlParameter("userName");
 	var room=getUrlParameter("room");
 	var password=getUrlParameter("password"); //usually not supplied
-
+	
+	//points earned by each students
+	var studentPointsArray = [];  // entries look like: {"name": name, "points": points};
+	
+	//wheel of misfortune (implemented in wheel.js)
 	var wheel = new Wheel("canvasWheel");
 	wheel.draw();
+	
+
+	//=====================END OF TESTING==========================================
+	
 	
 	allowTabsToBeInput('textarea'); //so users can enter tabs in answers
 
@@ -234,6 +243,16 @@ $(document).ready(function() {
 		$('.answer').removeClass('hidden');
 	});
 	
+	// award Points button is clicked, accumulate points for checked answers.
+	$('#btnAwardPoints').click(function() {
+		accumulatePoints();
+	});
+	
+	// Show top 10 students
+	$('#btnShowLeaders').click(function() {
+		showStudentsWithMostPoints();
+	});
+	
 	// clearAnswers button is clicked, eraseAnswers in database and screen
 	$('#btnClearAnswers').click( function() {
 		getData( {'class': classSection, 'userName': userName, 'password': password, 'clearAnswers': true }, function( data ) {
@@ -264,7 +283,7 @@ $(document).ready(function() {
 
 	// ===========================================================================
 	// note functions
-		//if answer textarea is modified, erase submit msg
+	//if answer textarea is modified, erase submit msg
 	$('#note').keyup(function() {
 		$('#msgSaveNote').html("Data has been modified - save needed!");
 	});
@@ -282,7 +301,8 @@ $(document).ready(function() {
 	// ===========================================================================
 	// wheel functions
 	
-	$('#btnWheelLoad').click( function() {
+	// load all names from server onto wheel
+	$('#btnWheelLoadAll').click( function() {
 		getData( {'class': classSection }, function( data ) {
 			//create sorted list of names
 			var aNames = [];
@@ -291,23 +311,48 @@ $(document).ready(function() {
 				aNames.push(name);
 			}
 			aNames.sort();
-			//create checkbox list
-			$('#wheelNameList').html("");
-			for (ndx=0; ndx<aNames.length ; ndx++) {
-				$('<input type="checkbox" checked="checked">')
-					.appendTo('#wheelNameList')
-					.attr('value',aNames[ndx])
-					.after(aNames[ndx] + "<br>");
-			}
-			//add names to wheel
+			buildCheckList(aNames);
 			addCheckedNamesToWheel();
 		});
 	});	
 	
+	//load top 5 names to wheel
+	$('#btnWheelLoadTop').click( function() {
+		var numToShow=5;
+		var sortedPointsArray=studentPointsArray;
+		sortedPointsArray.sort( function(a, b){ return b.points - a.points } ); //high to low
+		
+		var aNames = [];
+		for (var x=0; x<sortedPointsArray.length && x<numToShow; x++) {
+			aNames.push(sortedPointsArray[x].name);
+			lastPoints=sortedPointsArray[x].points;
+		}
+		//add anyone tied with #5 to list
+		for (; x<sortedPointsArray.length && sortedPointsArray[x].points==lastPoints; x++) {
+			aNames.push(sortedPointsArray[x].name);
+			lastPoints=sortedPointsArray[x].points;
+		}		
+		buildCheckList(aNames);
+		addCheckedNamesToWheel();
+	});
+	
+	//name checked or unchecked, rebuild wheel
 	$('#wheelNameList').on("click", "input", function() {
 		addCheckedNamesToWheel();
 	});
 	
+	//create html-formatted list of checkable names
+	function buildCheckList(aNames) {
+		$('#wheelNameList').html("");
+		for (ndx=0; ndx<aNames.length ; ndx++) {
+			$('<input type="checkbox" checked="checked">')
+				.appendTo('#wheelNameList')
+				.attr('value',aNames[ndx])
+				.after(aNames[ndx] + "<br>");
+		}
+	}	
+	
+	//add checked names to wheel
 	function addCheckedNamesToWheel() {
 		var nameList="";
 		$('#wheelNameList input').each( function(index) {
@@ -324,7 +369,51 @@ $(document).ready(function() {
 		wheel.spin();
 	});	
 
+	//=======================================================================
+	// award points to the students with "checked" answers.
+	// Answers still displayed (those that were wrong should have been deleted by user)
+	// will be tallied up.
+	function accumulatePoints() {
+		//for all answers that are checked, add a point to the student
+		var studentCount=0;
+		$('#answers .checked').each( function(index) {
+			var btn = $(this).find('.authorButton');
+			var name =  $(btn).attr('data-name');
+	
+			//if in array, add 1, else add entire entry to array (as 1)
+			var x=0;
+			while (x<studentPointsArray.length && studentPointsArray[x].name != name) 
+				x++;
+			if (x<studentPointsArray.length) 
+				studentPointsArray[x].points++;
+			else
+				studentPointsArray.push({"name": name, "points": 1});
+			
+			studentCount++;
+		});
+	
+		if (studentCount > 0)
+			showErrorDlgBox("Done.", "Points awarded to " + studentCount + " students.");
+		else
+					if (studentCount == 0)
+			showErrorDlgBox("Nothing to do!", "No answers are marked correct.<br>No points awarded!");
+	}
+	
+	//--------------------------------------------------------------------
+	function showStudentsWithMostPoints() {
+		var numToShow=5;
+		var sortedPointsArray=studentPointsArray;
+		sortedPointsArray.sort( function(a, b){ return b.points - a.points } ); //high to low
+		
+		//print out list for testing ----------------
+		var studentList="";
+		for (var x=0; x<sortedPointsArray.length && x<numToShow; x++) {
+			var entry=sortedPointsArray[x];
+			studentList+=entry.name + ' (' + entry.points + ')<br>';
+		}
 
+		showErrorDlgBox("Top " + numToShow, studentList);	
+	}
 	
 	//=======================================================================
 	//update Seating chart
