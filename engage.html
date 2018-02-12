@@ -64,9 +64,11 @@
 		<hr>
 		
 		<div id="answerControls">
-			<button id="btnGetAnswers" type="button">get Answers</button><br>
-			<button id="btnShowAnswers" type="button">show Answers</button><br>
-			<button id="btnClearAnswers" type="button">clear Answers</button><br>
+			<button id="btnGetAnswers" type="button">Get Answers</button><br>
+			<button id="btnShowAnswers" type="button">Show Answers</button><br>
+			<button id="btnAwardPoints" type="button" title="Award points for checked (green) answers)">Award Points</button><br>
+			<button id="btnClearAnswers" type="button">Clear Answers</button><br>
+			<button id="btnShowLeaders" type="button" title="Show top 10 students)">Show Leaders</button><br>
 		</div>
 		<div id="answers"></div>		
 	</section>
@@ -74,8 +76,10 @@
 
 	<section id="wheelSection" data-menutext="Wheel of Misfortune" class="instructor">
 		<div id="wheelControls" style="float: left">
-			<button id="btnWheelLoad" type="button"> Load Names </button> &nbsp; &nbsp; 
+			<button id="btnWheelLoadAll" type="button"> Load All Names </button> 
 			<button id="btnWheelSpin" style="position: relative; top: 100; left: 50;"> Spin </button>
+			<br><button id="btnWheelLoadTop" type="button"> Load Top 5 </button> &nbsp; &nbsp; 
+
 			<div id="wheelNameList">
 			</div>
 		</div>
