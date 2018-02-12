@@ -10,7 +10,7 @@
 //
 //    e.g: engage.html?class=CS-161-01&room=S181&userName=bobb  (userName is from Moodle: e.g. richa)
 //
-//  TODO: only enable seat-clicks and Answer Entry tab if valid userID is provided.
+//  TODO: only enable seat-clicks and Answer Entry tab if valid userID is provided. 
 
 $(document).ready(function() {
 	//Note:  all functions are defined inside this function 
