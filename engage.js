@@ -52,11 +52,11 @@ $(document).ready(function() {
 		classSection="";	
 	}
 	
-	// room (e.g. S181, S182, or S183)
+	// room (e.g. S181, S182, S183, or I202)
 	if (room == undefined) {
 		errMsg += "<br>Room wasn't provided, defaulting to S182. <br>To fix add a room parameter to the URL (specifying S181, S182, or S183)<br>";
 		room="S182";
-	} else if (room != "S181" && room != "S182"  && room != "S182x" && room != "S183") {
+	} else if (room != "S181" && room != "S182"  && room != "S182x" && room != "S183" && room !="I202") {
 		errMsg += "<br>invalid room parameter, defaulting to S182. <br>To fix add a room parameter to the URL specifying S181, S182, or S183)<br>";
 		room="S182";	
 	}
@@ -446,13 +446,25 @@ $(document).ready(function() {
 			[ 17, 18,   0,   19, 20, 21, 22,   0,  23, 24],
 			[  0,  0,   0,    0,  0,  0,  0,   0,   0,  0],
 			[ 25, 26,   0,    0,  0,  0,  0,   0,   0,  0]
-		];		
+		];
+		
+		var seats202 = [ //seat numbers (as viewed from back; 99="Instructor")
+			[  0,  0,  0,    0, 0,   0,  0,  0],
+			[  0,  0, 99,    0, 0,   0,  0,  0],
+			[  0,  0,  0,    0, 0,    0,  0,  0],
+			[  1,  2,  3,    0, 0,    4,  5,  6],
+			[  7,  8,  9,    0, 0,   10, 11, 12],
+			[ 13, 14, 15,    0, 0,   16, 17, 18],
+			[ 19, 20,  21,   0, 0,   99, 23, 24]
+		];	
 		
 		var seats;
 		if (room=="S181" || room=="S183") //181 & 183 have same layout
 			seats = seats181;
 		else if (room=="S182x")
 			seats = seats182x;
+		else if (room=="I202")
+			seats = seats202;
 		else
 			seats = seats182; 
 		
