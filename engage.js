@@ -30,7 +30,7 @@ $(document).ready(function() {
 	var wheel = new Wheel("canvasWheel");
 	wheel.draw();
 	
-
+	
 	//=====================END OF TESTING==========================================
 	
 	
