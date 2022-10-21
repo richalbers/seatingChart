@@ -25,9 +25,6 @@ function Wheel(elementID) {
 					"Wheel", "of", "Misfortune", " ",
 					"Wheel", "of", "Misfortune", " " ];
 					
-	//this.aColors = [ "blue", "yellow", "green", "red", "orange", "fuchsia", "teal" ];
-	this.aColors = [ "cyan", "yellow", "lightgreen", "tomato", "orange", "fuchsia", "lavender" ];
-	this.lastColorNdx=this.aColors.length-1;
 	this.colorNdx = 0;
 	
 	//canvas and wheel dimensions
@@ -53,12 +50,6 @@ Wheel.prototype.loadNames = function(nameList) {
 	//	this.stop();
 	
 	this.aNames = nameList.split(";");
-
-	//make sure two adjacent wedges aren't the same color
-	if ( (this.aNames.length-1) % this.aColors.length == 0)
-		this.lastColorNdx = this.aColors.length-2;
-	else
-		this.lastColorNdx = this.aColors.length-1;
 
 	this.draw();
 }
@@ -165,19 +156,22 @@ Wheel.prototype.drawWedge = function(ctx, angleRad, x, y) {
 	//It's the same for all slices.
 
 	//determine the color
-	if (this.colorNdx < this.lastColorNdx)
-		this.colorNdx++;
-	else
-		this.colorNdx = 0;
-	ctx.fillStyle = this.aColors[this.colorNdx];
+	this.colorNdx++;
+	var hue=720/this.aNames.length*this.colorNdx;	//goes through color palette twice
+	if (this.aNames.length<11) 						//for small wheels, just go through once
+		hue=hue/2;
+	ctx.fillStyle = 'hsl(' + hue + ', 100%, 80%)';  //hue,saturation, lightness
 
 	//draw the wedge (all straight lines...)
+	ctx.strokeStyle = "white";
+	ctx.lineWidth = 2;
 	ctx.beginPath();
 	ctx.moveTo(0, 0);
-	ctx.lineTo(x, y);
-	ctx.lineTo(x,-y);
-	ctx.closePath();
-	ctx.fill();
+	ctx.lineTo(x-1, y);
+	ctx.lineTo(x-1,-y);
+	ctx.closePath(); //completes triangle definition
+	ctx.stroke();	 //draws outside line of triangle
+	//ctx.fill();		//fills triangle
 	
 	//draw the curved part on the outside
 	ctx.arc(0, 0, this.outerRadius, angleRad/2, 0-(angleRad/2), true);
@@ -246,37 +240,3 @@ Wheel.prototype.drawText = function(ctx, textToDraw) {
 }
  
 // =======================================================================
-
-/*
-var wheel;
-
-//creats wheel and display is
-function init() {
-	 wheel = new Wheel("canvasWheel");
-	 wheel.draw();
-}
-
-//spins the wheel
-function start() {
-	wheel.spin();
-}
-
-//loads names from textarea into wheel
-function loadNames() {
-	//get names from textbox and put into array
-	var names = document.getElementById("names").value;
-	var aNames = names.split("\n");
-	
-	//build a ; deliminted list of all names to be included (those that don't begin with a space)
-	var nameList = "";
-	var delimiter = ""; //no delimiter before the first one....
-	for (x=0;x<aNames.length;x++) {
-		if (aNames[x].length>0 && aNames[x].charAt(0) != " ") {
-			nameList = nameList + delimiter + aNames[x];
-			delimiter = ";"
-		}
-	}
-	wheel.loadNames(nameList);
-}
-*/
-
